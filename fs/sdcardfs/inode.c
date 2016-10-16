@@ -223,7 +223,8 @@ struct dentry *__lookup_rename_ci(
 static int sdcardfs_rename(
 	struct inode *old_dir,
 	struct dentry *old_dentry,
-	struct inode *new_dir, struct dentry *new_dentry
+	struct inode *new_dir, struct dentry *new_dentry,
+	unsigned int flags
 ) {
 	int err;
 	struct dentry *trap, *dentry;
@@ -233,6 +234,11 @@ static int sdcardfs_rename(
 	bool overlapped = true;
 
 	trace_sdcardfs_rename_enter(old_dir, old_dentry, new_dir, new_dentry);
+
+	if (flags) {
+		err = -EINVAL;
+		goto out;
+	}
 
 	/* since old_dir, new_old both have inode_locked, so
 	   it is no need to use dget_parent */
@@ -330,7 +336,7 @@ unlock_err:
 dput_err:
 	dput(real_old_parent);
 	dput(real_old_dentry);
-
+out:
 	trace_sdcardfs_rename_exit(old_dir, old_dentry, new_dir, new_dentry, err);
 	return err;
 }
