@@ -706,6 +706,7 @@ endif
 
 # Tell gcc to never replace conditional load with a non-conditional one
 KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
+KBUILD_CFLAGS	+= $(call cc-option,-fno-allow-store-data-races)
 
 # The compiler may "libcall optimize" certain function calls into the below
 # functions, for architectures that don't use -ffreestanding. If we don't plan
