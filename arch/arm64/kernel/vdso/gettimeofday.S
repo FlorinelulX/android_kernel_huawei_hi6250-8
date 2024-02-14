@@ -106,7 +106,7 @@ x_tmp		.req	x8
 9998:
 	.endm
 
-	.macro clock_gettime_return, shift=0
+	.macro clock_gettime_return shift=0
 	.if \shift == 1
 	lsr	x11, x11, x12
 	.endif
@@ -209,7 +209,7 @@ realtime:
 	get_clock_shifted_nsec res=x15, cycle_last=x10, mult=x11
 	get_ts_realtime res_sec=x10, res_nsec=x11, \
 		clock_nsec=x15, xtime_sec=x13, xtime_nsec=x14, nsec_to_sec=x9
-	clock_gettime_return, shift=1
+	clock_gettime_return shift=1
 
 	ALIGN
 monotonic:
@@ -231,7 +231,7 @@ monotonic:
 		clock_nsec=x15, xtime_sec=x13, xtime_nsec=x14, nsec_to_sec=x9
 
 	add_ts sec=x10, nsec=x11, ts_sec=x3, ts_nsec=x4, nsec_to_sec=x9
-	clock_gettime_return, shift=1
+	clock_gettime_return shift=1
 
 	ALIGN
 realtime_coarse:

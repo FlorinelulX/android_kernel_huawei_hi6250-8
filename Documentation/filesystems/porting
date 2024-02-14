@@ -498,5 +498,9 @@ in your dentry operations instead.
 [mandatory]
 	calling conventions for ->put_link() have changed.  It gets inode instead of
 	dentry,  it does not get nameidata at all and it gets called only when cookie
+--
+[mandatory]
+	->rename() has an added flags argument.  Any flags not handled by the
+        filesystem should result in EINVAL being returned.
 	is non-NULL.  Note that link body isn't available anymore, so if you need it,
 	store it as cookie.
