@@ -20,6 +20,8 @@
 #include <linux/filter.h>
 #include <linux/version.h>
 
+#define u64_to_user_ptr(x) ((void __user *)(uintptr_t)x)
+
 #define BPF_OBJ_FLAG_MASK   (BPF_F_RDONLY | BPF_F_WRONLY)
 
 DEFINE_PER_CPU(int, bpf_prog_active);
