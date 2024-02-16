@@ -2869,6 +2869,7 @@ static inline int pskb_trim_rcsum(struct sk_buff *skb, unsigned int len)
 		return 0;
 	return pskb_trim_rcsum_slow(skb, len);
 }
+#define skb_rb_first(root) rb_to_skb(rb_first(root))
 
 static inline int __skb_trim_rcsum(struct sk_buff *skb, unsigned int len)
 {
