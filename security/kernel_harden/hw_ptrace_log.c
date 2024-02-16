@@ -49,8 +49,8 @@ static int ptrace_do_upload_log(long type, const char * child_cmdline, const cha
 int record_ptrace_info_before_return_EIO(long request, struct task_struct *child)
 {
 	struct task_struct *tracer;
-	char tcomm_child[sizeof(child->comm) + 8] = {0}; /*8 is reserved for unknown string*/
-	char tcomm_tracer[sizeof(child->comm) + 8] = {0};/*comm size is same within any task*/
+	char tcomm_child[TASK_COMM_LEN] = {0}; /*8 is reserved for unknown string*/
+	char tcomm_tracer[TASK_COMM_LEN] = {0};/*comm size is same within any task*/
 	static unsigned int  g_ptrace_log_counter = 0;
 
 	if (child == NULL)
