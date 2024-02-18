@@ -32,7 +32,6 @@ struct mb_free_area_t {
 struct mb_zone_t {
 	struct page *all_pages;
 	struct mb_page_t pages[MAILBOX_PAGE_MAX];
-	struct mb_free_area_t free_areas[MAILBOX_ORDER_MAX+1];
 };
 
 static struct mb_zone_t m_zone;
@@ -62,7 +61,6 @@ static void mailbox_show_status(void)
 	pr_info("----------------------------------------\n");
 
 	for (i = 0; i < MAILBOX_ORDER_MAX; i++) { /*lint !e574*/
-		head = &m_zone.free_areas[i].page_list; /*lint !e574*/
 		if (list_empty(head))
 			pr_info("order[%02d] is empty\n", i);
 		else {
@@ -130,7 +128,6 @@ void *mailbox_alloc(size_t size, int flag)
 	for (i = order; i <= MAILBOX_ORDER_MAX; i++) { /*lint !e574*/
 		unsigned int j;
 
-		head = &m_zone.free_areas[i].page_list; /*lint !e574*/
 		if (list_empty(head))
 			continue;
 
@@ -146,7 +143,6 @@ void *mailbox_alloc(size_t size, int flag)
 			new_page = pos + (1<<j); /*lint !e679*/
 			new_page->count = 0;
 			new_page->order = j;
-			list_add_tail(&new_page->node, &m_zone.free_areas[j].page_list);
 		}
 		list_del(&pos->node);
 		mutex_unlock(&mb_lock);
@@ -209,7 +205,6 @@ void mailbox_free(void *ptr)
 			}
 		} else {
 			/* release self */
-			list_add_tail(&self->node, &m_zone.free_areas[i].page_list);
 			mutex_unlock(&mb_lock);
 			return;
 		}
@@ -469,7 +464,6 @@ int mailbox_mempool_init(void)
 	m_zone.pages[0].order = MAILBOX_ORDER_MAX;
 
 	for (i = 0; i <= MAILBOX_ORDER_MAX; i++) { /*lint !e574*/
-		area = &m_zone.free_areas[i];
 		INIT_LIST_HEAD(&area->page_list);
 		area->order = i;
 	}
