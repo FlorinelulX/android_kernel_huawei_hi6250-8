@@ -32,7 +32,8 @@ struct mb_free_area_t {
 struct mb_zone_t {
 	struct page *all_pages;
 	struct mb_page_t pages[MAILBOX_PAGE_MAX];
-	struct mb_free_area_t free_areas[MAILBOX_ORDER_MAX+1];
+	// On PAGE_SIZE = 4k, this is 10
+	struct mb_free_area_t free_areas[25];
 };
 
 static struct mb_zone_t m_zone;
