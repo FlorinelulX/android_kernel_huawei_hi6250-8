@@ -508,9 +508,7 @@ EXPORT_SYMBOL(blk_queue_stack_limits);
 
 static unsigned int blk_round_down_sectors(unsigned int sectors, unsigned int lbs)
 {
-	sectors = round_down(sectors, lbs >> SECTOR_SHIFT);
-	if (sectors < PAGE_SIZE >> SECTOR_SHIFT)
-		sectors = PAGE_SIZE >> SECTOR_SHIFT;
+
 	return sectors;
 }
 
