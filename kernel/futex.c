@@ -1104,7 +1104,6 @@ static void wait_for_owner_exiting(int ret, struct task_struct *exiting)
 	if (WARN_ON_ONCE(ret == -EBUSY && !exiting))
 		return;
 
-	mutex_lock(&exiting->futex_exit_mutex);
 	/*
 	 * No point in doing state checking here. If the waiter got here
 	 * while the task was in exec()->exec_futex_release() then it can
@@ -1113,7 +1112,6 @@ static void wait_for_owner_exiting(int ret, struct task_struct *exiting)
 	 * already. Highly unlikely and not a problem. Just one more round
 	 * through the futex maze.
 	 */
-	mutex_unlock(&exiting->futex_exit_mutex);
 
 	put_task_struct(exiting);
 }
